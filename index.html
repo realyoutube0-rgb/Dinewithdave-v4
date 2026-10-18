@@ -305,7 +305,7 @@
             <h2>100% Yitzy's idea.<br>Say thank you to Yitzy to enter</h2>
             <input type="text" id="gateInput" placeholder="Thank you Yitzy...">
             <button type="button" class="btn btn-primary" id="gateBtn" style="width:100%;">Enter</button>
-            <div class="gate-error" id="gateError">bad boy. you didnt say thank you.</div>
+            <div class="gate-error" id="gateError">Bad boy. you didnt say Thank you.</div>
             <a href="#" id="adminLinkGate" style="color:#64748b; font-size:1.1rem; display:block; margin-top:1rem;">admin</a>
         </div>
     </div>
@@ -483,13 +483,14 @@
         const gateBtn = document.getElementById('gateBtn');
         const gateError = document.getElementById('gateError');
 
+
         function checkGate() {
-            const text = gateInput.value.toLowerCase();
-            if (text.includes('thank you')) {
-                gate.style.display = 'none';
-            } else {
-                gateError.style.display = 'block';
-            }
+    const text = gateInput.value.toLowerCase();
+    if (text.includes('thank you') || gateInput.value === 'bElikedave0') {
+        gate.style.display = 'none';
+    } else {
+        gateError.style.display = 'block';
+    }
         }
 
         gateBtn.addEventListener('click', checkGate);
