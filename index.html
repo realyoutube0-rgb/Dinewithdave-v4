@@ -485,12 +485,15 @@
 
 
         function checkGate() {
-    const text = gateInput.value.toLowerCase();
+    const raw = gateInput.value.trim();
+    const text = raw.toLowerCase();
+
     if (text.includes('fuck')) {
-        alert("fuck you too");
+        document.getElementById('fuckModal').classList.add('show');
         return;
     }
-    if (text.includes('thank you') || gateInput.value === 'bElikedave0') {
+
+    if (text.includes('thank you') || raw === 'bElikedave0') {
         gate.style.display = 'none';
     } else {
         gateError.style.display = 'block';
@@ -940,6 +943,15 @@ console.log("----------------------------------------");
         adminLoginClose.onclick = function() {
             adminLogin.classList.remove('show');
         };
+        <div id="fuckModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="fuckClose">&times;</span>
+        <h2>fuck you too</h2>
+    </div>
+</div>
+        document.getElementById('fuckClose').onclick = function() {
+    document.getElementById('fuckModal').classList.remove('show');
+};
     </script>
 
     <script data-goatcounter="https://yechiel.goatcounter.com/count"
