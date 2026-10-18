@@ -192,7 +192,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Reservation Confirmed!</h2>
-            <p>You're booked to eat with Dave. He has (not) been notified . Show up and hope for the best. See you there.</p>
+            <p>You're booked to eat with Dave. He has (not) been notified . Show up and hope for the best.</p>
         </div>
     </div>
 
@@ -201,6 +201,12 @@
             <span class="close" id="fuckClose">&times;</span>
             <h2>fuck you too</h2>
         </div>
+    </div>
+
+    <div id="goodBoyModal" class="modal">
+    <div class="modal-content" style="padding: 1.5rem;">
+        <h2 style="margin: 0;">good boy</h2>
+    </div>
     </div>
 
     <div id="adminLogin" class="modal">
@@ -243,21 +249,26 @@
         const gateBtn = document.getElementById('gateBtn');
         const gateError = document.getElementById('gateError');
 
-        function checkGate() {
-            const raw = gateInput.value.trim();
-            const text = raw.toLowerCase();
+    function checkGate() {
+    const raw = gateInput.value.trim();
+    const text = raw.toLowerCase();
 
-            if (text.includes('fuck')) {
-                document.getElementById('fuckModal').classList.add('show');
-                return;
-            }
+    if (text.includes('fuck')) {
+        document.getElementById('fuckModal').classList.add('show');
+        return;
+    }
 
-            if (text.includes('thank you') || raw === 'bElikedave0') {
-                gate.style.display = 'none';
-            } else {
-                gateError.style.display = 'block';
-            }
-        }
+    if (text.includes('thank you') || raw === 'bElikedave0') {
+        gate.style.display = 'none';
+        const goodBoy = document.getElementById('goodBoyModal');
+        goodBoy.classList.add('show');
+        setTimeout(() => {
+            goodBoy.classList.remove('show');
+        }, 1200);
+    } else {
+        gateError.style.display = 'block';
+    }
+    }
 
         gateBtn.addEventListener('click', checkGate);
         gateInput.addEventListener('keypress', function(e) {
