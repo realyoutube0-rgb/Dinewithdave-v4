@@ -225,7 +225,7 @@
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 3000;
             left: 0;
             top: 0;
             width: 100%;
@@ -306,7 +306,7 @@
             <input type="text" id="gateInput" placeholder="Thank you Yitzy...">
             <button type="button" class="btn btn-primary" id="gateBtn" style="width:100%;">Enter</button>
             <div class="gate-error" id="gateError">bad boy. you didnt say thank you.</div>
-            <a href="#" id="adminLink" style="color:#64748b; font-size:1.1rem; display:block; margin-top:1rem;">admin</a>
+            <a href="#" id="adminLinkGate" style="color:#64748b; font-size:1.1rem; display:block; margin-top:1rem;">admin</a>
         </div>
     </div>
 
@@ -425,6 +425,10 @@
         <p style="margin-top: 0.5rem; font-size: 0.8rem;">Inspired by yitzy. All his idea and could not have done it with out him.</p>
     </footer>
 
+    <div style="text-align:center; margin: 2rem 0;">
+        <a href="#" id="adminLink" style="color:#64748b; font-size:1.1rem;">admin</a>
+    </div>
+
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -435,6 +439,7 @@
 
     <div id="adminLogin" class="modal">
         <div class="modal-content" style="background:#000; color:#00ff00; font-family:monospace; max-width:400px;">
+            <span class="close" id="adminLoginClose" style="color:#00ff00;">&times;</span>
             <h2 style="color:#00ff00; font-family:monospace;">ADMIN ACCESS</h2>
             <p style="color:#00ff00; margin-bottom:1rem;">Enter code:</p>
             <input type="password" id="adminCodeInput" style="width:100%; background:#111; color:#00ff00; border:1px solid #00ff00; padding:0.5rem; font-family:monospace; margin-bottom:1rem;">
@@ -465,9 +470,9 @@
         };
 
         window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.classList.remove('show');
-            }
+            if (event.target == modal) modal.classList.remove('show');
+            if (event.target == adminLogin) adminLogin.classList.remove('show');
+            if (event.target == adminModal) adminModal.classList.remove('show');
         };
 
         const today = new Date().toISOString().split('T')[0];
@@ -493,11 +498,13 @@
         });
 
         const adminLink = document.getElementById('adminLink');
+        const adminLinkGate = document.getElementById('adminLinkGate');
         const adminLogin = document.getElementById('adminLogin');
         const adminCodeInput = document.getElementById('adminCodeInput');
         const adminSubmit = document.getElementById('adminSubmit');
         const adminModal = document.getElementById('adminModal');
         const adminClose = document.getElementById('adminClose');
+        const adminLoginClose = document.getElementById('adminLoginClose');
         const codeOutput = document.getElementById('codeOutput');
 
         const fakeCode = `const dave = {
@@ -535,12 +542,15 @@ dave.status = "still eating";
 console.log("system ready");
 `;
 
-        adminLink.addEventListener('click', function(e) {
+        function openAdminLogin(e) {
             e.preventDefault();
             adminLogin.classList.add('show');
             adminCodeInput.value = "";
             adminCodeInput.focus();
-        });
+        }
+
+        adminLink.addEventListener('click', openAdminLogin);
+        adminLinkGate.addEventListener('click', openAdminLogin);
 
         adminSubmit.addEventListener('click', function() {
             if (adminCodeInput.value === "bElikedave0") {
@@ -565,6 +575,10 @@ console.log("system ready");
 
         adminClose.onclick = function() {
             adminModal.classList.remove('show');
+        };
+
+        adminLoginClose.onclick = function() {
+            adminLogin.classList.remove('show');
         };
     </script>
 
