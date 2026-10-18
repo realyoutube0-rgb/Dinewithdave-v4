@@ -257,18 +257,18 @@
         document.getElementById('fuckModal').classList.add('show');
         return;
     }
-
-    if (text.includes('thank you') || raw === 'bElikedave0') {
-        gate.style.display = 'none';
+if (text.includes('thank you') || raw === 'bElikedave0') {
+    gate.style.display = 'none';
+    if (text.includes('thank you')) {
         const goodBoy = document.getElementById('goodBoyModal');
         goodBoy.classList.add('show');
         setTimeout(() => {
             goodBoy.classList.remove('show');
         }, 1200);
-    } else {
-        gateError.style.display = 'block';
     }
-    }
+} else {
+    gateError.style.display = 'block';
+}
 
         gateBtn.addEventListener('click', checkGate);
         gateInput.addEventListener('keypress', function(e) {
