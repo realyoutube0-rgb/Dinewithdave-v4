@@ -486,6 +486,10 @@
 
         function checkGate() {
     const text = gateInput.value.toLowerCase();
+    if (text.includes('fuck')) {
+        alert("fuck you too");
+        return;
+    }
     if (text.includes('thank you') || gateInput.value === 'bElikedave0') {
         gate.style.display = 'none';
     } else {
