@@ -30,11 +30,7 @@
         .meals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1100px; margin: 0 auto; }
         .meal-card { background: #f8fafc; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: transform 0.3s; cursor: pointer; }
         .meal-card:hover { transform: translateY(-6px); }
-        .meal-card img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-        }
+        .meal-card img { width: 100%; height: auto; object-fit: contain; }
         .meal-card .content { padding: 1.5rem; }
         .meal-card h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.5rem; color: #0f172a; }
         .meal-card p { color: #475569; font-size: 0.95rem; margin-bottom: 1rem; }
@@ -60,11 +56,75 @@
         .gate-content h2 { font-family: 'Playfair Display', serif; margin-bottom: 1rem; color: #0f172a; }
         .gate-content input { width: 100%; margin-bottom: 1rem; }
         .gate-error { color: #dc2626; font-size: 0.9rem; margin-top: 0.5rem; display: none; }
+        #adminModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #000;
+            color: #00ff00;
+            font-family: monospace;
+            flex-direction: column;
+        }
+        #adminModal.show { display: flex; }
+        #codeOutput {
+            flex: 1;
+            max-height: 70vh;
+            margin: 0;
+            padding: 1rem;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 0.85rem;
+            line-height: 1.3;
+            box-sizing: border-box;
+        }
+#promptLine {
+    display: none;
+    padding: 0.5rem 1rem 1rem 1rem;
+    background: #000;
+    align-items: center;
+}
+#promptLine.show { display: flex; }
+#adminCommand {
+    background: #000;
+    color: #00ff00;
+    border: none;
+    outline: none;
+    font-family: monospace;
+    font-size: 0.85rem;
+    flex: 1;
+    min-width: 0;
+    caret-color: transparent;
+}
+        .blinking-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.1em;
+            background: #00ff00;
+            animation: blink 1s step-end infinite;
+            margin-left: 4px;
+            vertical-align: text-bottom;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        #mainContent.hidden { display: none; }
         @media (max-width: 768px) {
             .form-row { grid-template-columns: 1fr; }
             nav a { margin-left: 1rem; font-size: 0.9rem; }
             header { flex-direction: column; gap: 1rem; }
         }
+      #adminCommand,
+#adminCommand:focus {
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    background: #000 !important;
+}
     </style>
 </head>
 <body>
@@ -73,123 +133,125 @@
             <h2>100% Yitzy's idea.<br>Say thank you to Yitzy, to Enter</h2>
             <input type="text" id="gateInput" placeholder="Thank you Yitzy...">
             <button type="button" class="btn btn-primary" id="gateBtn" style="width:100%;">Enter</button>
-            <div class="gate-error" id="gateError">Bad boy. You did'nt say Thank you.</div>
+            <div class="gate-error" id="gateError">Bad boy. You didn't say Thank you.</div>
             <a href="#" id="adminLinkGate" style="color:#64748b; font-size:1.1rem; display:block; margin-top:1rem;">admin</a>
         </div>
     </div>
 
-    <header>
-        <div class="logo">DAVE</div>
-        <nav>
-            <a href="#meals">Meals</a>
-            <a href="#reserve">Reservations</a>
-            <a href="#about">About</a>
-        </nav>
-    </header>
+    <div id="mainContent">
+        <header>
+            <div class="logo">DAVE</div>
+            <nav>
+                <a href="#meals">Meals</a>
+                <a href="#reserve">Reservations</a>
+                <a href="#about">About</a>
+            </nav>
+        </header>
 
-    <section class="hero">
-        <h1>DINE WITH DAVE</h1>
-        <p class="subtitle">The exclusive dining experience you've been waiting for. Book breakfast, lunch, or dinner with Dave himself.</p>
-        <p class="location">Lakewood, NJ • Available 24/7</p>
-        <div class="cta-buttons">
-            <a href="#reserve" class="btn btn-primary">Make a Reservation</a>
-            <a href="#meals" class="btn btn-secondary">See Meal Options</a>
-        </div>
-    </section>
-
-    <section class="meals-section" id="meals">
-        <h2>Choose Your Meal</h2>
-        <p class="lead">Click a time of day to reserve your spot eating with Dave. He's known for good vibes and questionable portion control.</p>
-        <div class="meals-grid">
-            <div class="meal-card" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'});">
-                <img src="dave_top.jpg" alt="Dave eating">
-                <div class="content">
-                    <h3>Breakfast</h3>
-                    <p>Start your day with Dave. Expect eggs, coffee, and unsolicited life advice.</p>
-                    <span class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Reserve Breakfast</span>
-                </div>
+        <section class="hero">
+            <h1>DINE WITH DAVE</h1>
+            <p class="subtitle">The exclusive dining experience you've been waiting for. Book breakfast, lunch, or dinner with Dave himself.</p>
+            <p class="location">Lakewood, NJ • Available 24/7</p>
+            <div class="cta-buttons">
+                <a href="#reserve" class="btn btn-primary">Make a Reservation</a>
+                <a href="#meals" class="btn btn-secondary">See Meal Options</a>
             </div>
-            <div class="meal-card" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'});">
-                <img src="dave_bl.jpg" alt="Dave at lunch">
-                <div class="content">
-                    <h3>Lunch</h3>
-                    <p>Midday hang with Dave. Salads, sandwiches, and stories from the road.</p>
-                    <span class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Reserve Lunch</span>
-                </div>
-            </div>
-            <div class="meal-card" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'});">
-                <img src="dave_br.jpg" alt="Dave at dinner">
-                <div class="content">
-                    <h3>Dinner</h3>
-                    <p>Evening meal with Dave. The full experience. Bring an appetite and low expectations.</p>
-                    <span class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Reserve Dinner</span>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="dave-showcase" id="about">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem; color: #0f172a;">Meet Your Host</h2>
-        <video src="dave_collage.mp4" controls autoplay muted loop style="max-width:500px;width:100%;border-radius:12px;"></video>
-        <p style="max-width: 600px; margin: 0 auto; color: #475569;">
-            As one of the most available dining companions in the tri-state area, Dave's goal is to provide a unique and memorable experience for every guest. Whether you're grabbing a quick bite or a full meal, he'll be there (probably).
-        </p>
-    </section>
-
-    <section class="reservation-section" id="reserve">
-        <div class="reservation-container">
-            <h2>Book Your Dave</h2>
-            <p style="text-align: center; color: #64748b; margin-bottom: 2rem;">Select your preferred meal time. Instant confirmation.</p>
-            <form id="reservationForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="date">Date</label>
-                        <input type="date" id="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="time">Time</label>
-                        <select id="time" required>
-                            <option value="">Select time</option>
-                            <option>12:00 PM</option>
-                            <option>1:00 PM</option>
-                            <option>2:00 PM</option>
-                            <option>3:00 PM</option>
-                            <option>4:00 PM</option>
-                            <option>5:00 PM</option>
-                            <option>6:00 PM</option>
-                            <option>7:00 PM</option>
-                            <option>8:00 PM</option>
-                            <option>Fuck you. come to minyan at this point.</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="guests">Party Size</label>
-                        <select id="guests" required>
-                            <option value="1" selected>Just me</option>
-                            <option value="2">I hate dave and want more people with me cuz daves not enough</option>
-                        </select>
+        <section class="meals-section" id="meals">
+            <h2>Choose Your Meal</h2>
+            <p class="lead">Click a time of day to reserve your spot eating with Dave. He's known for good vibes and questionable portion control.</p>
+            <div class="meals-grid">
+                <div class="meal-card" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'});">
+                    <img src="dave_top.jpg" alt="Dave eating">
+                    <div class="content">
+                        <h3>Breakfast</h3>
+                        <p>Start your day with Dave. Expect eggs, coffee, and unsolicited life advice.</p>
+                        <span class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Reserve Breakfast</span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" placeholder="your name" required>
+                <div class="meal-card" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'});">
+                    <img src="dave_bl.jpg" alt="Dave at lunch">
+                    <div class="content">
+                        <h3>Lunch</h3>
+                        <p>Midday hang with Dave. Salads, sandwiches, and stories from the road.</p>
+                        <span class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Reserve Lunch</span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="notes">Special Requests</label>
-                    <textarea id="notes" rows="3" placeholder="Extra fries? Specific restaurant? Tell Dave you saw him on the extreme chat?"></textarea>
+                <div class="meal-card" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'});">
+                    <img src="dave_br.jpg" alt="Dave at dinner">
+                    <div class="content">
+                        <h3>Dinner</h3>
+                        <p>Evening meal with Dave. The full experience. Bring an appetite and low expectations.</p>
+                        <span class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Reserve Dinner</span>
+                    </div>
                 </div>
-                <button type="submit" class="submit-btn">Find a Table with Dave</button>
-            </form>
+            </div>
+        </section>
+
+        <section class="dave-showcase" id="about">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem; color: #0f172a;">Meet Your Host</h2>
+            <video src="dave_collage.mp4" controls autoplay muted loop style="max-width:500px;width:100%;border-radius:12px;"></video>
+            <p style="max-width: 600px; margin: 0 auto; color: #475569;">
+                As one of the most available dining companions in the tri-state area, Dave's goal is to provide a unique and memorable experience for every guest. Whether you're grabbing a quick bite or a full meal, he'll be there (probably).
+            </p>
+        </section>
+
+        <section class="reservation-section" id="reserve">
+            <div class="reservation-container">
+                <h2>Book Your Dave</h2>
+                <p style="text-align: center; color: #64748b; margin-bottom: 2rem;">Select your preferred meal time. Instant confirmation.</p>
+                <form id="reservationForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="time">Time</label>
+                            <select id="time" required>
+                                <option value="">Select time</option>
+                                <option>12:00 PM</option>
+                                <option>1:00 PM</option>
+                                <option>2:00 PM</option>
+                                <option>3:00 PM</option>
+                                <option>4:00 PM</option>
+                                <option>5:00 PM</option>
+                                <option>6:00 PM</option>
+                                <option>7:00 PM</option>
+                                <option>8:00 PM</option>
+                                <option>Fuck you. come to minyan at this point.</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="guests">Party Size</label>
+                            <select id="guests" required>
+                                <option value="1" selected>Just me</option>
+                                <option value="2">I hate dave and want more people with me cuz daves not enough</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" placeholder="your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Special Requests</label>
+                        <textarea id="notes" rows="3" placeholder="Extra fries? Specific restaurant? Tell Dave you saw him on the extreme chat?"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Find a Table with Dave</button>
+                </form>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Dine with dave. Just a guy who likes to eat.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">Inspired by yitzy. All his idea and could not have done it with out him.</p>
+        </footer>
+
+        <div style="text-align:center; margin: 2rem 0;">
+            <a href="#" id="adminLink" style="display:none;">admin</a>
         </div>
-    </section>
-
-    <footer>
-        <p>© 2026 Dine with dave. Just a guy who likes to eat.</p>
-        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Inspired by yitzy. All his idea and could not have done it with out him.</p>
-    </footer>
-
-    <div style="text-align:center; margin: 2rem 0;">
-        <a href="#" id="adminLink" style="color:#64748b; font-size:1.1rem;">admin</a>
     </div>
 
     <div id="modal" class="modal">
@@ -208,9 +270,9 @@
     </div>
 
     <div id="goodBoyModal" class="modal">
-    <div class="modal-content" style="padding: 1.5rem;">
-        <h2 style="margin: 0;">good boy</h2>
-    </div>
+        <div class="modal-content" style="padding: 1.5rem;">
+            <h2 style="margin: 0;">good boy</h2>
+        </div>
     </div>
 
     <div id="adminLogin" class="modal">
@@ -223,11 +285,12 @@
         </div>
     </div>
 
-    <div id="adminModal" class="modal">
-        <div class="modal-content" style="background:#000; color:#00ff00; font-family:monospace; max-width:700px;">
-            <span class="close" id="adminClose" style="color:#00ff00;">&times;</span>
-            <h2 style="color:#00ff00; font-family:monospace;">ACCESS GRANTED</h2>
-            <pre id="codeOutput" style="color:#00ff00; background:#000; padding:1rem; text-align:left; font-size:0.9rem; line-height:1.4; white-space:pre-wrap;"></pre>
+    <div id="adminModal">
+        <pre id="codeOutput"></pre>
+        <div id="promptLine">
+            <span style="color:#00ff00; margin-right:0.3rem;">$</span>
+            <input type="text" id="adminCommand" autocomplete="off">
+            <span class="blinking-cursor"></span>
         </div>
     </div>
 
@@ -253,32 +316,32 @@
         const gateBtn = document.getElementById('gateBtn');
         const gateError = document.getElementById('gateError');
 
-    function checkGate() {
-    const raw = gateInput.value.trim();
-    const text = raw.toLowerCase();
+        function checkGate() {
+            const raw = gateInput.value.trim();
+            const text = raw.toLowerCase();
 
-    const badWords = ['fuck', 'shit', 'bitch', 'asshole', 'damn', 'cunt', 'dick', 'pussy', 'bastard', 'motherfucker'];
-    if (badWords.some(word => text.includes(word))) {
-        document.getElementById('fuckModal').classList.add('show');
-        return;
-    }
+            const badWords = ['fuck', 'shit', 'bitch', 'asshole', 'damn', 'cunt', 'dick', 'pussy', 'bastard', 'motherfucker'];
+            if (badWords.some(word => text.includes(word))) {
+                document.getElementById('fuckModal').classList.add('show');
+                return;
+            }
 
-    if (text.includes('thank you') || raw === 'bElikedave0') {
-        gate.style.display = 'none';
-        setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 100);
-        if (text.includes('thank you')) {
-            const goodBoy = document.getElementById('goodBoyModal');
-            goodBoy.classList.add('show');
-            setTimeout(() => {
-                goodBoy.classList.remove('show');
-            }, 1200);
+            if (text.includes('thank you') || raw === 'bElikedave0') {
+                gate.style.display = 'none';
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 100);
+                if (text.includes('thank you')) {
+                    const goodBoy = document.getElementById('goodBoyModal');
+                    goodBoy.classList.add('show');
+                    setTimeout(() => {
+                        goodBoy.classList.remove('show');
+                    }, 1200);
+                }
+            } else {
+                gateError.style.display = 'block';
+            }
         }
-    } else {
-        gateError.style.display = 'block';
-    }
-    }
         gateBtn.addEventListener('click', checkGate);
         gateInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') checkGate();
@@ -294,12 +357,13 @@
         const adminCodeInput = document.getElementById('adminCodeInput');
         const adminSubmit = document.getElementById('adminSubmit');
         const adminModal = document.getElementById('adminModal');
-        const adminClose = document.getElementById('adminClose');
         const adminLoginClose = document.getElementById('adminLoginClose');
         const codeOutput = document.getElementById('codeOutput');
+        const mainContent = document.getElementById('mainContent');
+        const promptLine = document.getElementById('promptLine');
+        const adminCommand = document.getElementById('adminCommand');
 
-        
-const fakeCode = `/*
+        const fakeCode = `/*
  * DAVE INTERNAL SYSTEMS
  * Classification: EXTREMELY CONFIDENTIAL
  * Facility: Lakewood Regional Dining Division
@@ -687,41 +751,103 @@ console.log("END OF INITIALIZATION SEQUENCE");
 console.log("----------------------------------------");
 `;
 
-
         function openAdminLogin(e) {
-            e.preventDefault();
-            adminLogin.classList.add('show');
-            adminCodeInput.value = "";
-            adminCodeInput.focus();
+    e.preventDefault();
+    adminLogin.classList.add('show');
+    adminCodeInput.value = "";
+    adminCodeInput.focus();
+}
+
+adminLink.addEventListener('click', openAdminLogin);
+adminLinkGate.addEventListener('click', openAdminLogin);
+
+function showPrompt() {
+    promptLine.classList.add('show');
+    adminCommand.value = "";
+    setTimeout(() => adminCommand.focus(), 50);
+}
+
+function hidePrompt() {
+    promptLine.classList.remove('show');
+}
+
+function exitAdmin() {
+    adminModal.classList.remove('show');
+    mainContent.classList.remove('hidden');
+    document.body.style.overflow = '';
+    document.body.style.background = '';
+    gate.style.display = 'none';
+}
+
+      let typer = null;
+function runTyping() {
+    clearInterval(typer);
+    let i = 0;
+    const duration = Math.random() * 2500 + 500;
+    const start = Date.now();
+    typer = setInterval(() => {
+        if (Date.now() - start >= duration || i >= fakeCode.length) {
+            clearInterval(typer);
+            codeOutput.textContent += "\n";
+            showPrompt();
+            codeOutput.scrollTop = codeOutput.scrollHeight;
+            return;
+        }
+        codeOutput.textContent += fakeCode[i];
+        i++;
+        codeOutput.scrollTop = codeOutput.scrollHeight;
+    }, 4);
+}
+      
+
+adminSubmit.addEventListener('click', function() {
+    if (adminCodeInput.value === "bElikedave0") {
+        adminLogin.classList.remove('show');
+        mainContent.classList.add('hidden');
+        adminModal.classList.add('show');
+        codeOutput.textContent = "";
+        hidePrompt();
+        document.body.style.overflow = 'hidden';
+        document.body.style.background = '#000';
+        runTyping(5000, 10000);
+    } else {
+        alert("Access denied");
+        adminCodeInput.value = "";
+    }
+});
+
+adminCommand.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        const cmd = this.value.trim();
+        this.value = "";
+        hidePrompt();
+
+        if (cmd.toLowerCase() === 'exit') {
+            exitAdmin();
+            return;
         }
 
-        adminLink.addEventListener('click', openAdminLogin);
-        adminLinkGate.addEventListener('click', openAdminLogin);
+        if (cmd === 'iLOveDave') {
+            codeOutput.textContent += "\n$ " + cmd + "\nwhat can I do for you master\n";
+            codeOutput.scrollTop = codeOutput.scrollHeight;
+            showPrompt();
+            return;
+        }
 
-        adminSubmit.addEventListener('click', function() {
-            if (adminCodeInput.value === "bElikedave0") {
-                adminLogin.classList.remove('show');
-                adminModal.classList.add('show');
-                codeOutput.textContent = "";
-                let i = 0;
-                const timer = setInterval(() => {
-                    codeOutput.textContent += fakeCode[i];
-                    i++;
-                    if (i >= fakeCode.length) clearInterval(timer);
-                }, 5);
-            } else {
-                alert("Access denied");
-                adminCodeInput.value = "";
-            }
-        });
+        if (cmd.toLowerCase() === 'enter web.dave' || cmd.toLowerCase() === 'enter web dot dave') {
+            codeOutput.textContent += "\n$ " + cmd + "\nBypassing gate...\n";
+            codeOutput.scrollTop = codeOutput.scrollHeight;
+            setTimeout(() => {
+                exitAdmin();
+            }, 400);
+            return;
+        }
 
-        adminCodeInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') adminSubmit.click();
-        });
-
-        adminClose.onclick = function() {
-            adminModal.classList.remove('show');
-        };
+        codeOutput.textContent += "\n$ " + cmd + "\n";
+        codeOutput.scrollTop = codeOutput.scrollHeight;
+        runTyping(500, 4500);
+    }
+});
 
         adminLoginClose.onclick = function() {
             adminLogin.classList.remove('show');
@@ -730,11 +856,24 @@ console.log("----------------------------------------");
         window.onclick = function(event) {
             if (event.target == modal) modal.classList.remove('show');
             if (event.target == adminLogin) adminLogin.classList.remove('show');
-            if (event.target == adminModal) adminModal.classList.remove('show');
             if (event.target == document.getElementById('fuckModal')) document.getElementById('fuckModal').classList.remove('show');
         };
     </script>
 
     <script data-goatcounter="https://yechiel.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<div id="my-logo" onclick="document.getElementById('adminLink').click()" style="position:fixed;right:14px;bottom:14px;z-index:1000;display:flex;align-items:center;gap:8px;background:#0f172a;border:1px solid #fbbf24;border-radius:999px;padding:4px 14px 4px 4px;opacity:0;pointer-events:none;transition:opacity .4s;font-family:Inter,Arial,sans-serif;font-size:12px;color:#fbbf24;white-space:nowrap;"><svg viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="50" r="46" fill="#0f172a" stroke="#fbbf24" stroke-width="4"/><path d="M32 30 L50 52 L68 30 M50 52 L50 76" fill="none" stroke="#fbbf24" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Made by Yechiel F.</span></div>
+<script>
+(function () {
+    var logo = document.getElementById('my-logo');
+    function check() {
+        var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 20;
+        logo.style.opacity = atBottom ? '0.9' : '0';
+        logo.style.pointerEvents = atBottom ? 'auto' : 'none';
+    }
+    window.addEventListener('scroll', check);
+    window.addEventListener('resize', check);
+    check();
+})();
+</script>
 </body>
 </html>
