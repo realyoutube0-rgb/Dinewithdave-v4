@@ -278,22 +278,7 @@
     } else {
         gateError.style.display = 'block';
     }
-if (text.includes('thank you') || raw === 'bElikedave0') {
-    gate.style.display = 'none';
-setTimeout(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}, 100);
-    if (text.includes('thank you')) {
-        const goodBoy = document.getElementById('goodBoyModal');
-        goodBoy.classList.add('show');
-        setTimeout(() => {
-            goodBoy.classList.remove('show');
-        }, 1200);
-    }
-} else {
-    gateError.style.display = 'block';
-}
-    }
+
         gateBtn.addEventListener('click', checkGate);
         gateInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') checkGate();
@@ -723,7 +708,7 @@ console.log("----------------------------------------");
                     codeOutput.textContent += fakeCode[i];
                     i++;
                     if (i >= fakeCode.length) clearInterval(timer);
-                res5);
+                }, 5);
             } else {
                 alert("Access denied");
                 adminCodeInput.value = "";
