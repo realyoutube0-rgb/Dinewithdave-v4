@@ -493,8 +493,53 @@ gateBtn.addEventListener('click', checkGate);
 gateInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') checkGate();
 });
+        const adminLink = document.getElementById('adminLink');
+const adminModal = document.getElementById('adminModal');
+const adminClose = document.getElementById('adminClose');
+const codeOutput = document.getElementById('codeOutput');
+
+const fakeCode = `> connecting to dave_server...
+> auth key accepted
+> loading meal_data...
+> dave_status: eating
+> visitors_today: 7
+> last_reservation: 6:30 PM
+> system: all clear
+> end of log`;
+
+adminLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    const code = prompt("Enter code:");
+    if (code === "bElikedave0") {
+        adminModal.classList.add('show');
+        codeOutput.textContent = "";
+        let i = 0;
+        const timer = setInterval(() => {
+            codeOutput.textContent += fakeCode[i];
+            i++;
+            if (i >= fakeCode.length) clearInterval(timer);
+        }, 30);
+    } else {
+        alert("Access denied");
+    }
+});
+
+adminClose.onclick = function() {
+    adminModal.classList.remove('show');
+};
     </script>
                 <script data-goatcounter="https://yechiel.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
-</body>
+<div style="text-align:center; margin: 2rem 0;">
+    <a href="#" id="adminLink" style="color:#64748b; font-size:0.85rem;">admin</a>
+</div>
+
+<div id="adminModal" class="modal">
+    <div class="modal-content" style="background:#000; color:#00ff00; font-family:monospace; max-width:700px;">
+        <span class="close" id="adminClose" style="color:#00ff00;">&times;</span>
+        <h2 style="color:#00ff00; font-family:monospace;">ACCESS GRANTED</h2>
+        <pre id="codeOutput" style="color:#00ff00; background:#000; padding:1rem; text-align:left; font-size:0.9rem; line-height:1.4; white-space:pre-wrap;"></pre>
+    </div>
+</div>
+            </body>
 </html>
