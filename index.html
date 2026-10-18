@@ -306,6 +306,7 @@
             <input type="text" id="gateInput" placeholder="Thank you Yitzy...">
             <button type="button" class="btn btn-primary" id="gateBtn" style="width:100%;">Enter</button>
             <div class="gate-error" id="gateError">bad boy. you didnt say thank you.</div>
+            <a href="#" id="adminLink" style="color:#64748b; font-size:1.1rem; display:block; margin-top:1rem;">admin</a>
         </div>
     </div>
 
@@ -424,15 +425,20 @@
         <p style="margin-top: 0.5rem; font-size: 0.8rem;">Inspired by yitzy. All his idea and could not have done it with out him.</p>
     </footer>
 
-    <div style="text-align:center; margin: 2rem 0;">
-        <a href="#" id="adminLink" style="color:#64748b; font-size:0.85rem;">admin</a>
-    </div>
-
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Reservation Confirmed!</h2>
             <p>You're booked to eat with Dave. He has (not) been notified . Show up and hope for the best. See you there.</p>
+        </div>
+    </div>
+
+    <div id="adminLogin" class="modal">
+        <div class="modal-content" style="background:#000; color:#00ff00; font-family:monospace; max-width:400px;">
+            <h2 style="color:#00ff00; font-family:monospace;">ADMIN ACCESS</h2>
+            <p style="color:#00ff00; margin-bottom:1rem;">Enter code:</p>
+            <input type="password" id="adminCodeInput" style="width:100%; background:#111; color:#00ff00; border:1px solid #00ff00; padding:0.5rem; font-family:monospace; margin-bottom:1rem;">
+            <button type="button" id="adminSubmit" class="btn btn-primary" style="width:100%; background:#00ff00; color:#000;">OK</button>
         </div>
     </div>
 
@@ -487,23 +493,58 @@
         });
 
         const adminLink = document.getElementById('adminLink');
+        const adminLogin = document.getElementById('adminLogin');
+        const adminCodeInput = document.getElementById('adminCodeInput');
+        const adminSubmit = document.getElementById('adminSubmit');
         const adminModal = document.getElementById('adminModal');
         const adminClose = document.getElementById('adminClose');
         const codeOutput = document.getElementById('codeOutput');
 
-        const fakeCode = `> connecting to dave_server...
-> auth key accepted
-> loading meal_data...
-> dave_status: eating
-> visitors_today: 7
-> last_reservation: 6:30 PM
-> system: all clear
-> end of log`;
+        const fakeCode = `const dave = {
+  name: "Dave",
+  location: "Lakewood, NJ",
+  available: true,
+  status: "eating",
+  meals: ["breakfast", "lunch", "dinner"]
+};
+
+function checkReservation(time, people) {
+  if (dave.available && people > 0) {
+    console.log("Reservation possible");
+    return true;
+  }
+  return false;
+}
+
+async function loadData() {
+  const response = await fetch("/api/dave");
+  const data = await response.json();
+  console.log(data.visitors);
+}
+
+if (code === "bElikedave0") {
+  console.log("ACCESS GRANTED");
+  loadData();
+} else {
+  console.log("ACCESS DENIED");
+}
+
+const visitors = 14;
+const lastBooking = "7:30 PM";
+dave.status = "still eating";
+console.log("system ready");
+`;
 
         adminLink.addEventListener('click', function(e) {
             e.preventDefault();
-            const code = prompt("Enter code:");
-            if (code === "bElikedave0") {
+            adminLogin.classList.add('show');
+            adminCodeInput.value = "";
+            adminCodeInput.focus();
+        });
+
+        adminSubmit.addEventListener('click', function() {
+            if (adminCodeInput.value === "bElikedave0") {
+                adminLogin.classList.remove('show');
                 adminModal.classList.add('show');
                 codeOutput.textContent = "";
                 let i = 0;
@@ -511,10 +552,15 @@
                     codeOutput.textContent += fakeCode[i];
                     i++;
                     if (i >= fakeCode.length) clearInterval(timer);
-                }, 30);
+                }, 20);
             } else {
                 alert("Access denied");
+                adminCodeInput.value = "";
             }
+        });
+
+        adminCodeInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') adminSubmit.click();
         });
 
         adminClose.onclick = function() {
