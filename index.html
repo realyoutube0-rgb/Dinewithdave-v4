@@ -66,10 +66,10 @@
 <body>
     <div id="gate" class="gate">
         <div class="gate-content">
-            <h2>100% Yitzy's idea.<br>Say thank you to Yitzy to enter</h2>
+            <h2>100% Yitzy's idea.<br>Say thank you to Yitzy, to Enter</h2>
             <input type="text" id="gateInput" placeholder="Thank you Yitzy...">
             <button type="button" class="btn btn-primary" id="gateBtn" style="width:100%;">Enter</button>
-            <div class="gate-error" id="gateError">Bad boy. you didnt say Thank you.</div>
+            <div class="gate-error" id="gateError">Bad boy. You did'nt say Thank you.</div>
             <a href="#" id="adminLinkGate" style="color:#64748b; font-size:1.1rem; display:block; margin-top:1rem;">admin</a>
         </div>
     </div>
@@ -86,7 +86,7 @@
     <section class="hero">
         <h1>DINE WITH DAVE</h1>
         <p class="subtitle">The exclusive dining experience you've been waiting for. Book breakfast, lunch, or dinner with Dave himself.</p>
-        <p class="location">Lakewood, NJ • Available 24/7 • No menu required</p>
+        <p class="location">Lakewood, NJ • Available 24/7</p>
         <div class="cta-buttons">
             <a href="#reserve" class="btn btn-primary">Make a Reservation</a>
             <a href="#meals" class="btn btn-secondary">See Meal Options</a>
@@ -259,6 +259,7 @@
     }
 if (text.includes('thank you') || raw === 'bElikedave0') {
     gate.style.display = 'none';
+    window.scrollTo(0, 0);
     if (text.includes('thank you')) {
         const goodBoy = document.getElementById('goodBoyModal');
         goodBoy.classList.add('show');
