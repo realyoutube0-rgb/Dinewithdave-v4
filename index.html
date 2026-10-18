@@ -257,9 +257,11 @@
     const raw = gateInput.value.trim();
     const text = raw.toLowerCase();
 
-    if (text.includes('fuck')) {
-        document.getElementById('fuckModal').classList.add('show');
-        return;
+const badWords = ['fuck', 'shit', 'bitch', 'asshole', 'damn', 'cunt', 'dick', 'pussy', 'bastard', 'motherfucker'];
+if (badWords.some(word => text.includes(word))) {
+    document.getElementById('fuckModal').classList.add('show');
+    return;
+}
     }
 if (text.includes('thank you') || raw === 'bElikedave0') {
     gate.style.display = 'none';
