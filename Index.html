@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserve Dave | Breakfast, Lunch or Dinner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            background: #f8f6f2;
+            line-height: 1.6;
+        }
+        header {
+            background: #0f172a;
+            color: white;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        nav a {
+            color: #e2e8f0;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #fbbf24; }
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            text-align: center;
+            padding: 5rem 5% 4rem;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .location {
+            color: #fbbf24;
+            font-weight: 500;
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+        .btn-primary {
+            background: #fbbf24;
+            color: #0f172a;
+        }
+        .btn-primary:hover { background: #f59e0b; transform: translateY(-1px); }
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        .btn-secondary:hover { background: white; color: #0f172a; }
+        .meals-section {
+            padding: 5rem 5%;
+            background: white;
+            text-align: center;
+        }
+        .meals-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+        .meals-section p.lead {
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+        }
+        .meals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .meal-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .meal-card:hover { transform: translateY(-6px); }
+        .meal-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            object-position: center top;
+        }
+        .meal-card .content {
+            padding: 1.5rem;
+        }
+        .meal-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+        .meal-card p {
+            color: #475569;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        .dave-showcase {
+            padding: 4rem 5%;
+            background: #f1f5f9;
+            text-align: center;
+        }
+        .dave-showcase img {
+            max-width: 500px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            margin-bottom: 1.5rem;
+        }
+        .reservation-section {
+            padding: 5rem 5%;
+            background: white;
+        }
+        .reservation-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+        }
+        .reservation-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            color: #334155;
+            font-size: 0.9rem;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+        }
+        .submit-btn {
+            width: 100%;
+            background: #dc2626;
+            color: white;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+        .submit-btn:hover { background: #b91c1c; }
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.65);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .modal-content h2 {
+            font-family: 'Playfair Display', serif;
+            color: #166534;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        .modal-content p {
+            color: #334155;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 0.75rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #94a3b8;
+            line-height: 1;
+        }
+        .close:hover { color: #1e293b; }
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            nav a { margin-left: 1rem; font-size: 0.9rem; }
+            header { flex-direction: column; gap: 1rem; }
+        }
+      .gate {
+    display: flex;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.95);
+    align-items: center;
+    justify-content: center;
+}
+.gate-content {
+    background: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+.gate-content h2 {
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 1rem;
+    color: #0f172a;
+}
+.gate-content p {
+    color: #475569;
+    margin-bottom: 1.5rem;
+}
+.gate-content input {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.gate-error {
+    color: #dc2626;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
+}
+    </style>
+</head>
+<body>
+  <div id="gate" class="gate">
+    <div class="gate-content">
+        <h2>Say thank you to Yitzy</h2>
+        <input type="text" id="gateInput" placeholder="Thank you Yitzy...">
+        <button type="button" class="btn btn-primary" id="gateBtn" style="width:100%;">Enter</button>
+        <div class="gate-error" id="gateError">bad boy. you didnt say thank you.</div>
+    </div>
+  </div>
+    <header>
+        <div class="logo">DAVE</div>
+        <nav>
+            <a href="#meals">Meals</a>
+            <a href="#reserve">Reservations</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>DINE WITH DAVE</h1>
+        <p class="subtitle">The exclusive dining experience you've been waiting for. Book breakfast, lunch, or dinner with Dave himself.</p>
+        <p class="location">Lakewood, NJ • Available 24/7 • No menu required</p>
+        <div class="cta-buttons">
+            <a href="#reserve" class="btn btn-primary">Make a Reservation</a>
+            <a href="#meals" class="btn btn-secondary">See Meal Options</a>
+        </div>
+    </section>
+
+    <section class="meals-section" id="meals">
+        <h2>Choose Your Meal</h2>
+        <p class="lead">Click a time of day to reserve your spot eating with Dave. He's known for good vibes and questionable portion control.</p>
+        
+        <div class="meals-grid">
+          <div class="meal-card" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'});">
+                <img src="dave_top.jpg" alt="Dave eating">
+                <div class="content">
+                    <h3>Breakfast</h3>
+                    <p>Start your day with Dave. Expect eggs, coffee, and unsolicited life advice.</p>
+                    <span class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Reserve Breakfast</span>
+                </div>
+            </>
+            <div class="meal-card" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'});">
+                <img src="dave_bl.jpg" alt="Dave at lunch">
+                <div class="content">
+                    <h3>Lunch</h3>
+                    <p>Midday hang with Dave. Salads, sandwiches, and stories from the road.</p>
+                    <span class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Reserve Lunch</span>
+                </div>
+            </>
+<div class="meal-card" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'});">
+                <img src="dave_br.jpg" alt="Dave at dinner">
+                <div class="content">
+                    <h3>Dinner</h3>
+                    <p>Evening meal with Dave. The full experience. Bring an appetite and low expectations.</p>
+                    <span class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Reserve Dinner</span>
+                </div>
+            </>
+        </div>
+    </section>
+
+    <section class="dave-showcase" id="about">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem; color: #0f172a;">Meet Your Host</h2>
+        <video src="dave_collage.mp4" controls autoplay muted loop style="max-width:500px;width:100%;border-radius:12px;"></video>
+        <p style="max-width: 600px; margin: 0 auto; color: #475569;">
+            As one of the most available dining companions in the tri-state area, Dave's goal is to provide a unique and memorable experience for every guest. Whether you're grabbing a quick bite or a full meal, he'll be there (probably).
+        </p>
+    </section>
+
+    <section class="reservation-section" id="reserve">
+        <div class="reservation-container">
+            <h2>Book Your Dave</h2>
+            <p style="text-align: center; color: #64748b; margin-bottom: 2rem;">Select your preferred meal time. Instant confirmation.</p>
+            
+            <form id="reservationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Time</label>
+                        <select id="time" required>
+                            <option value="">Select time</option>
+                            <option>12:00 PM</option>
+                            <option>1:00 PM</option>
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option>6:00 PM</option>
+                            <option>7:00 PM</option>
+                            <option>8:00 PM</option>
+                            <option>Fuck you. come to minyan at this point.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Party Size</label>
+                        <select id="guests" required>
+                            <option value="1" selected>Just me</option>
+                            <option value="2">I hate dave and want more people with me cuz daves not enough</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="What should Dave call you?" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Special Requests</label>
+                    <textarea id="notes" rows="3" placeholder="Extra fries? Specific restaurant? Tell Dave you saw him on the extreme chat?"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Find a Table with Dave</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Dine with Dave. Not a real restaurant. Just a guy who likes to eat.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Inspired by yitzy. All his idea and could not have done it with out him.</p>
+    </footer>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Reservation Confirmed!</h2>
+            <p>You're booked to eat with Dave. He has (not) been notified . Show up and hope for the best. See you there.</p>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('modal');
+        const closeBtn = document.querySelector('.close');
+
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            modal.classList.add('show');
+            this.reset();
+        });
+
+        closeBtn.onclick = function() {
+            modal.classList.remove('show');
+        };
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.classList.remove('show');
+            }
+        };
+
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').setAttribute('min', today);
+   const gate = document.getElementById('gate');
+const gateInput = document.getElementById('gateInput');
+const gateBtn = document.getElementById('gateBtn');
+const gateError = document.getElementById('gateError');
+
+function checkGate() {
+    const text = gateInput.value.toLowerCase();
+    if (text.includes('thank you')) {
+        gate.style.display = 'none';
+    } else {
+        gateError.style.display = 'block';
+    }
+}
+
+gateBtn.addEventListener('click', checkGate);
+gateInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') checkGate();
+});
+    </script>
+</body>
+</html>
