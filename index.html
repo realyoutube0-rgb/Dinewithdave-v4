@@ -507,40 +507,395 @@
         const adminLoginClose = document.getElementById('adminLoginClose');
         const codeOutput = document.getElementById('codeOutput');
 
-        const fakeCode = `const dave = {
-  name: "Dave",
-  location: "Lakewood, NJ",
-  available: true,
-  status: "eating",
-  meals: ["breakfast", "lunch", "dinner"]
+        
+const fakeCode = `/*
+ * DAVE INTERNAL SYSTEMS
+ * Classification: EXTREMELY CONFIDENTIAL
+ * Facility: Lakewood Regional Dining Division
+ * Build: DAVE_OS v9.4.1-STABLE-ish
+ * Status: OPERATIONAL (probably)
+ */
+
+const DAVE_CORE = {
+    identity: {
+        designation: "DAVE",
+        fullName: "David Laymar Lerman",
+        location: "Lakewood, New Jersey",
+        currentActivity: "eating",
+        biologicalStatus: "mostly operational",
+        threatLevel: "hungry",
+        availability: "suspiciously high",
+        lastKnownPosition: null,
+        personalityIndex: 87.4,
+        mysteriousnessCoefficient: 12.09
+    },
+
+    system: {
+        kernel: "DaveKernel_64x",
+        architecture: "MEATWARE",
+        memoryAllocation: "unnecessarily large",
+        processorTemperature: "warm",
+        activeProcesses: 47,
+        backgroundSnacking: true,
+        realitySynchronization: 0.9981,
+        commonSenseModule: "NOT FOUND",
+        emergencyProtocol: "ORDER MORE FOOD"
+    },
+
+    diningConfiguration: {
+        breakfast: {
+            enabled: true,
+            caffeineDependency: 0.92,
+            eggCompatibility: "CONFIRMED",
+            toastIntegrity: "UNKNOWN",
+            estimatedDuration: "variable",
+            nutritionalCompliance: "UNDER REVIEW"
+        },
+
+        lunch: {
+            enabled: true,
+            sandwichSubsystem: "READY",
+            saladAcceptance: 0.31,
+            productivityMultiplier: 1.74,
+            napProbability: 0.28
+        },
+
+        dinner: {
+            enabled: true,
+            appetiteLevel: "UNCLASSIFIED",
+            plateCapacity: "INSUFFICIENT",
+            secondsRequested: true,
+            financialDamage: "PENDING"
+        }
+    }
 };
 
-function checkReservation(time, people) {
-  if (dave.available && people > 0) {
-    console.log("Reservation possible");
-    return true;
-  }
-  return false;
+console.log("[BOOT] Initializing DAVE operating environment...");
+console.log("[BOOT] Loading personality configuration...");
+console.log("[BOOT] Attempting to locate common sense...");
+console.warn("[WARN] Common sense module returned undefined.");
+console.log("[BOOT] Continuing without essential components.");
+
+async function initializeDaveSubsystem() {
+    const modules = [
+        "appetite_controller",
+        "social_interaction_engine",
+        "food_detection_matrix",
+        "minyan_time_synchronizer",
+        "unnecessary_comment_generator",
+        "leftover_preservation_unit",
+        "emotional_support_via_snacks",
+        "suspicious_activity_monitor"
+    ];
+
+    for (const moduleName of modules) {
+        console.log("[MODULE] Loading " + moduleName + "...");
+        await simulateHandshake(moduleName);
+    }
+
+    return {
+        initialized: true,
+        modulesLoaded: modules.length,
+        errorsIgnored: 3,
+        snacksConsumed: "UNRECORDED"
+    };
 }
 
-async function loadData() {
-  const response = await fetch("/api/dave");
-  const data = await response.json();
-  console.log(data.visitors);
+function simulateHandshake(moduleName) {
+    const handshake = {
+        module: moduleName,
+        protocol: "DAVE-HS/7.2",
+        encryption: "PICKLE-256",
+        responseTime: Math.floor(Math.random() * 400) + 20,
+        integrityCheck: "PASSED-ISH",
+        handshakeStatus: "ACKNOWLEDGED"
+    };
+
+    console.log("[HANDSHAKE]", handshake);
+    return Promise.resolve(handshake);
 }
 
-if (code === "bElikedave0") {
-  console.log("ACCESS GRANTED");
-  loadData();
-} else {
-  console.log("ACCESS DENIED");
+class DaveReservationEngine {
+    constructor() {
+        this.reservations = [];
+        this.maximumGuests = 2;
+        this.operatingMode = "OPTIMISTIC";
+        this.tableAvailability = "THEORETICAL";
+        this.lastTransaction = null;
+    }
+
+    validateReservation(request) {
+        const validation = {
+            requestId: generateDaveID(),
+            timestamp: new Date().toISOString(),
+            guestCount: request.people,
+            requestedTime: request.time,
+            dateIntegrity: "CHECKED",
+            hostAvailability: DAVE_CORE.identity.availability,
+            restaurantExists: false,
+            confirmationStatus: "UNREASONABLY CONFIDENT"
+        };
+
+        console.log("[RESERVATION] Validation report:", validation);
+
+        if (!request.people || request.people < 1) {
+            return {
+                approved: false,
+                reason: "INSUFFICIENT HUMAN PRESENCE"
+            };
+        }
+
+        return {
+            approved: true,
+            confirmationCode: generateDaveID(),
+            note: "Host notification has not actually occurred."
+        };
+    }
+
+    async synchronizeCalendar() {
+        console.log("[CALENDAR] Contacting imaginary scheduling server...");
+        console.log("[CALENDAR] Server response: probably busy.");
+        return {
+            synchronized: true,
+            calendarProvider: "DaveCloud",
+            appointmentsFound: 0,
+            confidence: 0.14
+        };
+    }
+
+    generateReport() {
+        return {
+            reportType: "DINING_ACTIVITY_SUMMARY",
+            host: DAVE_CORE.identity.designation,
+            totalReservations: this.reservations.length,
+            estimatedMealsConsumed: "NOT FOR PUBLIC RELEASE",
+            operationalStatus: "STILL EATING"
+        };
+    }
 }
 
-const visitors = 14;
-const lastBooking = "7:30 PM";
-dave.status = "still eating";
-console.log("system ready");
+function generateDaveID() {
+    const prefix = "DAVE";
+    const randomSegment = Math.random()
+        .toString(36)
+        .substring(2, 10)
+        .toUpperCase();
+
+    const timestampSegment = Date.now()
+        .toString(16)
+        .slice(-6)
+        .toUpperCase();
+
+    return prefix + "-" + randomSegment + "-" + timestampSegment;
+}
+
+const DAVE_DATABASE = {
+    connection: {
+        host: "db.internal.dave.local",
+        port: 7482,
+        schema: "dining_operations",
+        protocol: "DAVE-SQL/3.7",
+        encryption: "TOAST-TLS",
+        connectionStatus: "ESTABLISHED",
+        replicationMode: "EVENTUAL SNACK CONSISTENCY"
+    },
+
+    queryRegistry: [
+        "SELECT * FROM available_daves;",
+        "SELECT hunger_level FROM biological_metrics;",
+        "UPDATE dinner SET expectations = 'LOW';",
+        "SELECT COUNT(*) FROM unsolicited_advice;",
+        "DELETE FROM vegetables WHERE popularity < 0.5;",
+        "SELECT * FROM secrets WHERE clearance = 'IMPOSSIBLE';"
+    ],
+
+    executeDiagnosticQuery(query) {
+        console.log("[DB] Preparing statement:", query);
+        console.log("[DB] Query plan generated successfully.");
+        console.log("[DB] Estimated execution time: 0.004 seconds.");
+        console.log("[DB] Returning 0 rows and several concerns.");
+
+        return {
+            queryHash: generateDaveID(),
+            rowsReturned: 0,
+            executionStatus: "SUCCESS_WITH_UNRESOLVED_QUESTIONS"
+        };
+    }
+};
+
+const DAVE_SECURITY = {
+    firewall: "PRESENT",
+    firewallConfiguration: "MOSTLY DECORATIVE",
+    intrusionDetection: true,
+    suspiciousVisitors: 14,
+    failedRealityChecks: 8,
+    encryptionStatus: "VERY TECHNICAL",
+    perimeterIntegrity: 0.884,
+    threatClassification: "UNKNOWN BUT PROBABLY HUNGRY",
+
+    runSecurityAudit() {
+        const audit = {
+            timestamp: new Date().toISOString(),
+            perimeter: "SCANNED",
+            unauthorizedSandwiches: 0,
+            suspiciousForks: 3,
+            missingLeftovers: 7,
+            detectedIntrusions: 1,
+            intruderIdentity: "PROBABLY YITZY",
+            recommendedAction: "DO ABSOLUTELY NOTHING"
+        };
+
+        console.warn("[SECURITY] Audit completed with questionable results.");
+        console.table(audit);
+        return audit;
+    }
+};
+
+const DAVE_METRICS = {
+    uptime: "99.7% excluding naps",
+    currentHunger: 94.8,
+    foodDetectionRange: "VARIABLE",
+    averageResponseTime: "AFTER HE FINISHES CHEWING",
+    conversationalBandwidth: "UNLIMITED",
+    patienceRemaining: 3.2,
+    breakfastEfficiency: 0.81,
+    lunchEfficiency: 0.76,
+    dinnerEfficiency: 1.43,
+    unexplainedCrumbs: 284,
+    totalBytesOfWisdom: "0x00F00D",
+    dailyOperationalCost: "CLASSIFIED"
+};
+
+function analyzeDiningBehavior(metrics) {
+    const report = [];
+
+    if (metrics.currentHunger > 80) {
+        report.push("CRITICAL: Hunger threshold exceeded.");
+    }
+
+    if (metrics.patienceRemaining < 10) {
+        report.push("WARNING: Patience reserves critically low.");
+    }
+
+    if (metrics.dinnerEfficiency > 1) {
+        report.push("NOTICE: Dinner output exceeds theoretical limits.");
+    }
+
+    report.push("INFO: Behavioral analysis inconclusive.");
+    report.push("INFO: Additional snacks may improve data quality.");
+
+    return {
+        generatedAt: new Date().toISOString(),
+        classification: "INTERNAL",
+        findings: report,
+        finalRecommendation: "FEED SUBJECT AND RETRY"
+    };
+}
+
+async function synchronizeDaveCloud() {
+    const endpoint = "/api/internal/dave/status";
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-System-Protocol": "DAVE-CORE",
+            "X-Request-Origin": "UNKNOWN"
+        }
+    };
+
+    console.log("[NETWORK] Resolving internal endpoint:", endpoint);
+    console.log("[NETWORK] Negotiating secure connection...");
+    console.log("[NETWORK] Waiting for response from DaveCloud...");
+
+    return {
+        endpoint: endpoint,
+        statusCode: 200,
+        serverResponse: "SUBJECT IS CURRENTLY EATING",
+        actualRequestSent: false,
+        synchronizationState: "SIMULATED"
+    };
+}
+
+function runDaveDiagnostics() {
+    console.group("DAVE SYSTEM DIAGNOSTICS");
+
+    console.log("Core identity:", DAVE_CORE.identity);
+    console.log("Dining configuration:", DAVE_CORE.diningConfiguration);
+    console.log("System metrics:", DAVE_METRICS);
+
+    const reservationEngine = new DaveReservationEngine();
+    const databaseResult = DAVE_DATABASE.executeDiagnosticQuery(
+        "SELECT * FROM dave_status WHERE hunger_level > 0;"
+    );
+
+    const securityReport = DAVE_SECURITY.runSecurityAudit();
+    const behavioralReport = analyzeDiningBehavior(DAVE_METRICS);
+
+    console.log("Database result:", databaseResult);
+    console.log("Security report:", securityReport);
+    console.log("Behavioral report:", behavioralReport);
+    console.log("Reservation engine:", reservationEngine);
+
+    console.groupEnd();
+
+    return {
+        diagnosticsCompleted: true,
+        database: "CONNECTED",
+        security: "QUESTIONABLE",
+        hunger: "PERSISTENT",
+        administrator: "STILL NOT IMPRESSED"
+    };
+}
+
+const DAVE_INTERNAL_LOG = [
+    "[03:14:02] CORE INITIALIZATION COMPLETE",
+    "[03:14:03] FOOD SENSOR CALIBRATION COMPLETE",
+    "[03:14:04] UNAUTHORIZED SNACK DETECTED",
+    "[03:14:05] SNACK CLASSIFICATION: PROBABLY CHIPS",
+    "[03:14:06] ATTEMPTING TO CONTACT HOST",
+    "[03:14:07] HOST RESPONSE: BUSY EATING",
+    "[03:14:08] REPEATING REQUEST",
+    "[03:14:09] HOST RESPONSE UNCHANGED",
+    "[03:14:10] CALENDAR SYNCHRONIZATION FAILED",
+    "[03:14:11] REASON: NO ONE ASKED DAVE",
+    "[03:14:12] RESTORING DEFAULT CONFIGURATION",
+    "[03:14:13] DEFAULT CONFIGURATION: HUNGRY",
+    "[03:14:14] ALL SYSTEMS OPERATIONAL-ISH"
+];
+
+DAVE_INTERNAL_LOG.forEach((entry, index) => {
+    console.log("[INTERNAL LOG " + (index + 1) + "] " + entry);
+});
+
+initializeDaveSubsystem()
+    .then(result => {
+        console.log("[INIT] Subsystem report:", result);
+        return synchronizeDaveCloud();
+    })
+    .then(networkReport => {
+        console.log("[SYNC] Network report:", networkReport);
+        return runDaveDiagnostics();
+    })
+    .then(finalReport => {
+        console.log("[FINAL] Diagnostic report:", finalReport);
+        console.log("[FINAL] DAVE CORE STATUS: READY");
+        console.log("[FINAL] HOST STATUS: STILL EATING");
+        console.log("[FINAL] SYSTEM SHUTDOWN: CANCELLED");
+    })
+    .catch(error => {
+        console.error("[FATAL] Unexpected Dave-related incident:", error);
+        console.error("[RECOVERY] Recommended action: order food.");
+    });
+
+console.log("----------------------------------------");
+console.log("DAVE INTERNAL MANAGEMENT SYSTEM");
+console.log("ACCESS LEVEL: ADMINISTRATIVE");
+console.log("RESTAURANT STATUS: NOT A REAL RESTAURANT");
+console.log("BOOKING ENGINE: FOR ENTERTAINMENT ONLY");
+console.log("END OF INITIALIZATION SEQUENCE");
+console.log("----------------------------------------");
 `;
+
 
         function openAdminLogin(e) {
             e.preventDefault();
