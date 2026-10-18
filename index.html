@@ -257,11 +257,27 @@
     const raw = gateInput.value.trim();
     const text = raw.toLowerCase();
 
-const badWords = ['fuck', 'shit', 'bitch', 'asshole', 'damn', 'cunt', 'dick', 'pussy', 'bastard', 'motherfucker'];
-if (badWords.some(word => text.includes(word))) {
-    document.getElementById('fuckModal').classList.add('show');
-    return;
-}
+    const badWords = ['fuck', 'shit', 'bitch', 'asshole', 'damn', 'cunt', 'dick', 'pussy', 'bastard', 'motherfucker'];
+    if (badWords.some(word => text.includes(word))) {
+        document.getElementById('fuckModal').classList.add('show');
+        return;
+    }
+
+    if (text.includes('thank you') || raw === 'bElikedave0') {
+        gate.style.display = 'none';
+        setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 100);
+        if (text.includes('thank you')) {
+            const goodBoy = document.getElementById('goodBoyModal');
+            goodBoy.classList.add('show');
+            setTimeout(() => {
+                goodBoy.classList.remove('show');
+            }, 1200);
+        }
+    } else {
+        gateError.style.display = 'block';
+    }
     }
 if (text.includes('thank you') || raw === 'bElikedave0') {
     gate.style.display = 'none';
